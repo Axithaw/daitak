@@ -1,14 +1,27 @@
 import React from 'react'
+import { useRef,useState } from 'react';
 
-export default function RightSide(handleAddBtn) {
+
+export default function RightSide({data,setData,nextId, setNextId}) {
+  const inputValue = useRef(null)
   return (
     <div className='col-span-1 bg-slate-50 h-full relative text-left p-3'>
         <h1 className=' tracking-wider text-2xl font-semibold mb-3 '>Add a Todo</h1>
-        <form action="" onSubmit={(e)=>{
-          e.preventDefault();
-          console.log("click add")
+
+
+        <form action="" 
+        onSubmit={(e)=>{
+            e.preventDefault();
+            console.log(inputValue.current.value)
+
+            const  newData = {id:nextId, task: inputValue.current.value}
+            if(inputValue.current.value !== '')  setData(data=>[...data, newData]);
+            setNextId(nextId => nextId + 1)
+            inputValue.current.value = ''
+            console.log(newData)
+         
         }}>
-            <input type="text" className='border-2 w-4/5 h-9 mr-4'/>
+            <input ref={inputValue}  type="text" className='border-2 w-4/5 h-9 mr-4'/>
             <button className='btn'  >Add</button>
         </form>
 
