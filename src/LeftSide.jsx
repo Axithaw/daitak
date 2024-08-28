@@ -3,33 +3,52 @@ import moment from 'moment'
 
 export default function LeftSide({data,setData}) {
 
-  const dataLength = data.length
+  const dataLength = data.length;
 
-  const [Completed, setCompleted] = useState(false)
+  
   const [count , setCount] = useState(0)
 
-  data.forEach(element => {
+  // data.map(item => {
 
-      if(element.Completed === true) return setCount(count => count + 1);
-      else return count
-  });
+  //     if(item.completed === true) return setCount(prevcount => prevcount + 1);
+  //    return count
+  // });
+
+
+  //time format
 
   const now = moment()
 
-  const formattedDate = now.format('ddd DD MMM');
+  const formattedDate = now.format('YYYY-MM-DD');
 
   const handleDelete = (id)=>{
     setData(data.filter((item)=>(item.id !== id)))
   }
 
-  // const handleCheckbox = (id)=>{
-  //     if(data.filter(item => item.id == id)){
-          
-  //     }
 
+//togglecheckbox
+  const handleCheckbox = (id, completed)=>{
+
+    setData(prevData => {
+     return prevData.map(
+        item =>   item.id === id?
+        {...item, completed ,id}: item
+      )
+   
      
-  //     console.log(newData)
-  // }
+    }
+   
+  )  
+ data.map(item => item.completed === true ? setCount(count => count + 1): count)
+  
+}
+
+// const clickCompleted =(id) =>{
+//   setData(prevData => 
+//     prevData.map(item => item.id === id? {...item, Completed: !item.Completed}: item)
+//   )
+// }   
+
 
   return (
     <div className='col-span-1 bg-slate-50 '>
@@ -43,14 +62,22 @@ export default function LeftSide({data,setData}) {
         {/* list */}
         <div className=''> 
             {data.map((item)=>(
-                 <div key={item.id} className='flex justify-between p-2 bg-blue-50 hover:bg-blue-100 tracking-widest'>
+                 <li key={item.id} 
+                    // onClick={()=>clickCompleted(item.id)}
+                    className={item.completed === true ? `list bg-green-100 hover:bg-green-200`: `list bg-blue-100 hover:bg-blue-200 `}>
                     
                     <div className='flex gap-2'>
+
+                      {/** Unsuccessful checkbox */}
+
                         <input 
-                        checked={item.Completed}
-                        type="checkbox"
-                        // onChange={()=> handleCheckbox(item.id)} 
+                            
+                            type="checkbox"
+                            checked={item.completed}
+                            onChange={(e)=> handleCheckbox(item.id, e.target.checked)} 
                         />
+
+
                         <h2>{item.task}</h2>
 
                     </div>
@@ -62,7 +89,7 @@ export default function LeftSide({data,setData}) {
                       X</button>
                     
                  
-             </div>
+             </li>
             ))}
         </div>
     </div>

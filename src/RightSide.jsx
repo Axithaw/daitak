@@ -14,14 +14,16 @@ export default function RightSide({data,setData,nextId, setNextId}) {
             e.preventDefault();
             console.log(inputValue.current.value)
 
-            const  newData = {id:nextId, task: inputValue.current.value}
-            if(inputValue.current.value !== '')  setData(data=>[...data, newData]);
-            setNextId(nextId => nextId + 1)
+            
+            if(inputValue.current.value !== '')  setData(currentdata=>[...currentdata, 
+              { id: crypto.randomUUID(), task: inputValue.current.value, completed: false }
+            ]);
+            // setNextId(nextId => nextId + 1)
             inputValue.current.value = ''
-            console.log(newData)
+
          
         }}>
-            <input ref={inputValue}  type="text" className='border-2 w-4/5 h-9 mr-4'/>
+            <input ref={inputValue}  type="text" className='border-2 w-4/5 h-9 mr-4 p-2'/>
             <button className='btn'  >Add</button>
         </form>
 
